@@ -25,12 +25,15 @@ def start():
     tempposition = 0
     count = 0
     countTotal = scl.get()
-    use = var.get()
-    print(use)
+    summer = var.get()
+    print(summer)
     while count < countTotal:
         time.sleep(0.5)
         try:
-            tempposition = findplay()
+            if summer:
+                tempposition = findsummer()
+            else:
+                tempposition = findplay()
         except:
             pass
         time.sleep(0.5)
@@ -48,6 +51,12 @@ def start():
 
 def findplay():
     playposition = pyautogui.locateCenterOnScreen('playkey.png')
+    pyautogui.click(playposition)
+    return playposition
+
+
+def findsummer():
+    playposition = pyautogui.locateCenterOnScreen('summer.png')
     pyautogui.click(playposition)
     return playposition
 
@@ -72,7 +81,7 @@ def findMind(use):
 root = Tk()
 root.geometry('540x320')
 root.title('明日方舟自动模块')
-mindlb = Label(root, text='是否使用理智',
+mindlb = Label(root, text='是否为嘉年华',
                width=20,
                height=2,
                )
