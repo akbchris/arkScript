@@ -92,7 +92,7 @@ timelb = Label(root, text='循环次数',
 
 timelb.pack()
 timevar = IntVar()
-scl = Scale(root, orient=HORIZONTAL, length=200, from_=1, to=10, label='请拖动滑块', tickinterval=1, resolution=1,
+scl = Scale(root, orient=HORIZONTAL, length=200, from_=0, to=50, label='请拖动滑块', tickinterval=5, resolution=1,
             variable=timevar)
 scl.pack()
 
