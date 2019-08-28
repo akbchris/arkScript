@@ -24,9 +24,9 @@ def start():
     print('start')
     tempposition = 0
     count = 0
-    countTotal = scl.get()
+    countTotal = int(w.get())
     summer = var.get()
-    print(summer)
+    mindUse = var2.get()
     while count < countTotal:
         time.sleep(0.5)
         try:
@@ -36,7 +36,19 @@ def start():
                 tempposition = findplay()
         except:
             pass
-        time.sleep(0.5)
+        time.sleep(1)
+        #寻找理智界面
+        try:
+            print('理智')
+            okPosition = pyautogui.locateCenterOnScreen('OK.png')
+
+            if mindUse:
+                print('进入循环')
+                pyautogui.click(okPosition)
+            else:
+                exit(1)
+        except:
+            pass
 
         try:
             count = findBegin(count)
@@ -71,9 +83,11 @@ def findBegin(count):
 
 def findMind(use):
     print('使用理智' + use)
-    print(pyautogui.locateCenterOnScreen('mm.png'))
+    okPosition=pyautogui.locateCenterOnScreen('OK.png')
+
     if use == True:
         print('进入循环')
+        pyautogui.click(okPosition)
     else:
         exit(1)
 
@@ -81,17 +95,28 @@ def findMind(use):
 root = Tk()
 root.geometry('540x320')
 root.title('明日方舟自动模块')
-mindlb = Label(root, text='是否为嘉年华',
+summerlb = Label(root, text='是否为嘉年华',
                width=20,
                height=2,
                )
-mindlb.pack()
+summerlb.pack()
 
 var = BooleanVar()
 rd1 = Radiobutton(root, text="是", variable=var, value=True)
 rd1.pack()
-
 rd2 = Radiobutton(root, text="否", variable=var, value=False)
+rd2.pack()
+
+mindlb = Label(root, text='是否自动使用理智',
+               width=20,
+               height=2,
+               )
+mindlb.pack()
+var2 = BooleanVar()
+rd1 = Radiobutton(root, text="是", variable=var2, value=True)
+rd1.pack()
+
+rd2 = Radiobutton(root, text="否", variable=var2, value=False)
 rd2.pack()
 
 timelb = Label(root, text='循环次数',
@@ -100,10 +125,12 @@ timelb = Label(root, text='循环次数',
                )
 
 timelb.pack()
-timevar = IntVar()
-scl = Scale(root, orient=HORIZONTAL, length=200, from_=0, to=50, label='请拖动滑块', tickinterval=5, resolution=1,
-            variable=timevar)
-scl.pack()
+timevar = StringVar()
+#scl = Scale(root, orient=HORIZONTAL, length=200, from_=0, to=50, label='请拖动滑块', tickinterval=5, resolution=1,
+#            variable=timevar)
+#scl.pack()
+w = Entry(root, textvariable=timevar)
+w.pack()
 
 btn1 = Button(root, text='启动', command=lambda: thread_it(start))
 btn1.pack()
