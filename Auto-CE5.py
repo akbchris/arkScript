@@ -2,6 +2,7 @@
 import pyautogui, time
 from tkinter import *
 import threading
+import random
 
 
 def thread_it(func):
@@ -21,29 +22,24 @@ def stop():
 
 
 def start():
-    print('start')
+    print('开始')
     tempposition = 0
     count = 0
     countTotal = int(w.get())
-    summer = var.get()
     mindUse = var2.get()
+    esTime = int(estiBox.get())
     while count < countTotal:
         time.sleep(0.5)
         try:
-            if summer:
-                tempposition = findsummer()
-            else:
-                tempposition = findplay()
+            tempposition = findplay()
         except:
             pass
         time.sleep(1)
-        #寻找理智界面
+        # 寻找理智界面
         try:
-            print('理智')
             okPosition = pyautogui.locateCenterOnScreen('OK.png')
 
             if mindUse:
-                print('进入循环')
                 pyautogui.click(okPosition)
             else:
                 exit(1)
@@ -51,14 +47,15 @@ def start():
             pass
 
         try:
-            count = findBegin(count)
-            left = countTotal - count
-            print('正在开始第', count, '次', '剩余', left)
+            count = findBegin(count, esTime, countTotal)
+
         except:
             pass
 
         if tempposition != 0:
             pyautogui.click(tempposition)
+        if count == countTotal:
+            exit(2)
 
 
 def findplay():
@@ -67,24 +64,19 @@ def findplay():
     return playposition
 
 
-def findsummer():
-    playposition = pyautogui.locateCenterOnScreen('summer.png')
-    pyautogui.click(playposition)
-    return playposition
-
-
-def findBegin(count):
+def findBegin(count, esTime, countTotal):
     opposition = pyautogui.locateCenterOnScreen('opstart.png')
     pyautogui.click(opposition)
     count = count + 1
-    time.sleep(60)
+    left = countTotal - count
+    print('正在开始第', count, '次', '剩余', left)
+    time.sleep(esTime)
     return count
 
 
 def findMind(use):
     print('使用理智' + use)
-    okPosition=pyautogui.locateCenterOnScreen('OK.png')
-
+    okPosition = pyautogui.locateCenterOnScreen('OK.png')
     if use == True:
         print('进入循环')
         pyautogui.click(okPosition)
@@ -95,17 +87,16 @@ def findMind(use):
 root = Tk()
 root.geometry('540x320')
 root.title('明日方舟自动模块')
-summerlb = Label(root, text='是否为嘉年华',
-               width=20,
-               height=2,
-               )
-summerlb.pack()
+estiTime = Label(root, text='预估一场时间（秒）',
+                 width=20,
+                 height=2,
+                 )
+estiTime.pack()
 
-var = BooleanVar()
-rd1 = Radiobutton(root, text="是", variable=var, value=True)
-rd1.pack()
-rd2 = Radiobutton(root, text="否", variable=var, value=False)
-rd2.pack()
+estivar = StringVar()
+estivar.set('60')
+estiBox = Entry(root, textvariable=estivar)
+estiBox.pack()
 
 mindlb = Label(root, text='是否自动使用理智',
                width=20,
@@ -126,9 +117,9 @@ timelb = Label(root, text='循环次数',
 
 timelb.pack()
 timevar = StringVar()
-#scl = Scale(root, orient=HORIZONTAL, length=200, from_=0, to=50, label='请拖动滑块', tickinterval=5, resolution=1,
+# scl = Scale(root, orient=HORIZONTAL, length=200, from_=0, to=50, label='请拖动滑块', tickinterval=5, resolution=1,
 #            variable=timevar)
-#scl.pack()
+# scl.pack()
 w = Entry(root, textvariable=timevar)
 w.pack()
 

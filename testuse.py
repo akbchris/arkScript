@@ -1,2 +1,5 @@
+
 import pyautogui
-print(pyautogui.locateOnScreen('OK.png'))
+
+okPosition = pyautogui.locateCenterOnScreen('OK.png')
+print(okPosition)
